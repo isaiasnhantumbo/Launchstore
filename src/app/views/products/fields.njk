@@ -11,7 +11,7 @@
 
 
 <div class="item">
-    <div>Name</div>
+    <div>Titulo</div>
     <div>
         <input type="text" name="name" placeholder="Digite o titulo do anuncio" value="{{ product.name }}">
     </div>
@@ -20,9 +20,7 @@
 <div class="item">
     <div>Descrição</div>
     <div>
-        <textarea name="description">
-{{product.description}}
-        </textarea>
+        <textarea name="description">{{product.description}}</textarea>
     </div>
 </div>
 
@@ -31,7 +29,9 @@
 <div class="item">
     <div>Valor</div>
     <div>
-        <input type="text" name="price" placeholder="Digite o preço do produto" value="{{ product.price }}">
+        <input type="text" name="price" placeholder="Digite o preço do produto" value="{{ product.price }}" 
+        onkeydown="Mask.apply(this, 'formatMZN')"
+        >
         {# Faremos uma mascara de dinheiro #}
     </div>
     {% if product.old_price %}
@@ -47,7 +47,7 @@
     </div>
 </div>
 
-{% if product.status %}
+{% if (product.status == "1") or (product.status == "0") %}
 
 <div class="item">
     <div>Disponível ? </div>
