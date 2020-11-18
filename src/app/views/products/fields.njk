@@ -31,12 +31,23 @@
         <input type="file" name="photos" multiple accept="images/*" id="photos-input" onchange="PhotosUpload.handleFileInput(event)">
         <p>Selecione ate 6 fotos</p>
         </div>
-        <div id="photos-preview">
 
+        <div id="photos-preview">
+            {% if files %}
+            {% for image in files %}
+            <div class="photo" id="{{image.id}}">
+                <img src="{{image.src}}" alt="{{image.name}}">
+                <i class="material-icons" onclick="PhotosUpload.removeOldPhoto(event)">close</i>
+            </div>
+            {% endfor %}
+            <input type="hidden" name="removed_files">
+            {% endif %}
         </div>
     </div>
 
-</div <div class="item">
+</div> 
+
+<div class="item">
 <div>Valor</div>
 <div>
     <input type="text" name="price" placeholder="Digite o preço do produto" value="{{ product.price }}" onkeydown="Mask.apply(this, 'formatMZN')">
