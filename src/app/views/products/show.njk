@@ -1,0 +1,40 @@
+{% extends "layout.njk" %}
+
+{% block content %}
+<section class="product-single container">
+
+    <div class="gallery">
+        <img src="https://via.placeholder.com/300?text=PRODUTO SEM NOME" alt="">
+    </div>
+
+    <div class="info">
+        <h1>{{product.name}}</h1>
+
+        <div class="published">
+            Publicado em {{product.published.day}} as {{product.published.hour}}
+        </div>
+
+        <div class="description">
+            {{product.description}}
+        </div>
+
+        <div class="price-buy">
+            <div class="price">
+                {{product.price}}
+                {% if product.price !== product.oldPrice %}
+            <span class="old"> {{product.oldPrice}}</span>
+                {% endif %}
+            </div>
+            <div class="buy">
+                {% if product.status == 0 %}
+                <p class="unavailable"></p>
+                {% elseif product.quantity == 0 %}
+                <p class="unavailable"></p>
+                {% else %}
+                <button class="button">Comprar</button>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content%}
