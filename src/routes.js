@@ -2,11 +2,15 @@ const express = require("express");
 const routes = express.Router();
 const multer = require("./app/middlewares/multer");
 const ProductsController = require("./app/controllers/ProductsController");
+const HomeController = require("./app/controllers/HomeController");
+const SearchController = require("./app/controllers/SearchController");
 
-routes.get("/", function (req, res) {
-  return res.render("layout.njk");
-});
+// Home
+routes.get("/", HomeController.index);
 
+// SEarch
+routes.get("/products/search", SearchController.index)
+// Products
 routes.get("/products/create", ProductsController.create);
 routes.get("/products/:id", ProductsController.show);
 routes.get("/products/:id/edit", ProductsController.edit);
@@ -14,6 +18,7 @@ routes.get("/products/:id/edit", ProductsController.edit);
 routes.post("/products", multer.array("photos", 6), ProductsController.post);
 routes.put("/products", multer.array("photos", 6), ProductsController.put);
 routes.delete("/products", ProductsController.delete);
+
 
 // Alias
 routes.get("/ads/create  ", function (req, res) {
