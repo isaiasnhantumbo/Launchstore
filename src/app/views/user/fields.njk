@@ -1,7 +1,7 @@
 <div class="item">
     <div>Nome Completo</div>
     <div class="input">
-        <input type="text" name="name" placeholder="Digite o seu nome completo" value="{{ user.name }}" required>
+        <input type="text" name="name" placeholder="Digite o seu nome completo" value="{{ user.name }}" required="required">
     </div>
 </div>
 
@@ -15,7 +15,9 @@
 <div class="item">
     <div>Senha</div>
     <div class="input">
-        <input type="password" name="password" required placeholder="Escolha uma senha segura" >
+        <input type="password" name="password" {% if not user.id %} placeholder="Escolha uma senha segura" 
+         {%else%} placeholder="Digite a sua senha para atualizar a conta"
+        {%endif%}>
     </div>
 </div>
 {% if not user.id %}
@@ -23,7 +25,7 @@
     <div class="item">
         <div>Repetir Senha</div>
         <div class="input">
-            <input type="password" required name="passwordRepeat" placeholder="Digite novamente a senha escolhida">
+            <input type="password" required="required" name="passwordRepeat" placeholder="Digite novamente a senha escolhida">
         </div>
     </div>
 

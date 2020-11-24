@@ -1,12 +1,23 @@
 const User = require("../models/User");
+const {compare} = require("bcryptjs")
+
+function checkAllFields(body) {
+  const keys = Object.keys(body);
+
+  for (key of keys) {
+    if (body[key] == "") {
+      return {
+        user: body,
+        error: "Por favor, preencha todos os campos.",
+      };
+    }
+  }
+}
 async function post(req, res, next) {
   // check if has all fields
-  const keys = Object.keys(req.body);
-
-  for (key in keys) {
-    if (req.body[key] == "") {
-      return res.render("users/register", {user:req.body,error:"Por favor, preencha todos os campos"});
-    } 
+  const fillAllFields = checkAllFields(req.body);
+  if (fillAllFields) {
+    return res.render("user/register", fillAllFields);
   }
   // check if user exists [email]
   let { email, cpf_cnpj, password, passwordRepeat } = req.body;
@@ -18,15 +29,63 @@ async function post(req, res, next) {
     or: { cpf_cnpj },
   });
 
-  if (user) return res.render("users/register", {user:req.body,error:"Usuário ja cadastrado"});
+  if (user)
+    return res.render("user/register", {
+      user: req.body,
+      error: "Usuário ja cadastrado",
+    });
 
   // check if password match
-  if (password != passwordRepeat) return res.render("users/register", {user:req.body,error:"A senha esta diferente"});
- 
+  if (password != passwordRepeat)
+    return res.render("user/register", {
+      user: req.body,
+      error: "A senha esta diferente",
+    });
+
   next();
+}
+async function show(req, res, next) {
+  const { userId: id } = req.session;
+
+  const user = await User.findOne({ where: { id } });
+
+  if (!user)
+    return res.render("user/register", {
+      error: "Usuário nao encontrado!",
+    });
+
+  req.user = user;
+  next();
+}
+async function update(req, res, next) {
+  // all fields
+  const fillAllFields = checkAllFields(req.body);
+  if (fillAllFields) {
+    return res.render("user/index", fillAllFields);
+  }
+  // has password
+  const { id, password } = req.body;
+  if (!password)
+    return res.render("user/index", {
+      user: req.body,
+      error: "Coloque sua senha para atualizar seu cadastro!",
+    });
+
+    const user = await User.findOne({where:{id}})
+    const passed = await compare(password, user.password)
+
+    if(!passed) return res.render("user/index", {
+      user: req.body,
+      error:"Senha incorreta"
+    })
+
+    req.user = user
+
+    next()
 }
 
 module.exports = {
   post,
+  show,
+  update,
 };
- 
