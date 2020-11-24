@@ -1,6 +1,6 @@
 const db = require("../../config/db");
 const { hash } = require("bcryptjs");
-const { update } = require("../controllers/UserController");
+
 
 module.exports = {
   async findOne(filters) {
@@ -18,6 +18,7 @@ module.exports = {
     const results = await db.query(query);
     return results.rows[0];
   },
+
   async create(data) {
     try {
       const query = `
@@ -49,6 +50,7 @@ module.exports = {
       console.error(error);
     }
   },
+
   async update(id, fields) {
     let query = "UPDATE users SET";
 
@@ -68,4 +70,5 @@ module.exports = {
     await db.query(query)
     return
   },
-};
+
+}

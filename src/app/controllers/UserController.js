@@ -42,7 +42,7 @@ module.exports = {
       console.error(error);
       return res.render("user/index", {
         error: "Algum erro aconteceu!",
-      });
+      })
     }
   },
 };
