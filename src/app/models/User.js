@@ -1,10 +1,11 @@
-const db = require("../../config/db");
-const { hash } = require("bcryptjs");
-
+const db = require('../../config/db');
+const { hash } = require('bcryptjs');
+const Product = require('../models/Product');
+const fs = require('fs');
 
 module.exports = {
   async findOne(filters) {
-    let query = "SELECT * FROM users";
+    let query = 'SELECT * FROM users';
 
     Object.keys(filters).map((key) => {
       // WHERE | OR | AND
@@ -39,9 +40,9 @@ module.exports = {
         data.name,
         data.email,
         passwordHash,
-        data.cpf_cnpj.replace(/\D/g, ""),
-        data.cep.replace(/\D/g, ""),
-        data.address
+        data.cpf_cnpj.replace(/\D/g, ''),
+        data.cep.replace(/\D/g, ''),
+        data.address,
       ];
 
       const results = await db.query(query, values);
@@ -52,7 +53,7 @@ module.exports = {
   },
 
   async update(id, fields) {
-    let query = "UPDATE users SET";
+    let query = 'UPDATE users SET';
 
     Object.keys(fields).map((key, index, array) => {
       if (index + 1 < array.length) {
@@ -67,8 +68,34 @@ module.exports = {
         `;
       }
     });
-    await db.query(query)
-    return
+    await db.query(query);
+    return;
   },
+  async delete(id) {
+    // Get all products
+    let results = await db.query(
+      'SELECT * FROM products WHERE user_id = $1', [id]);
+    const products = results.rows;
 
-}
+    //On products, get all images
+    const allFilesPromise = products.map((product) =>
+      Product.files(product.id)
+    );
+
+    let promiseResults = await Promise.all(allFilesPromise);
+
+    // delete user from database
+    await db.query('DELETE FROM users WHERE id = $1', [id]);
+
+    // delete images from public folder
+    promiseResults.map((results) => {
+      results.rows.map((file) => {
+        try {
+          fs.unlinkSync(file.path);
+        } catch (err) {
+          console.error(err);
+        }
+      });
+    });
+  },
+};
