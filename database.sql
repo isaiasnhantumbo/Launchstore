@@ -21,8 +21,8 @@ CREATE TABLE "categories" (
 );
 
 INSERT INTO categories(name) VALUES('Comida');
-INSERT INTO categories(name) VALUES('electronicos');
-INSERT INTO categories(name) VALUES('carros');
+INSERT INTO categories(name) VALUES('Electronicos');
+INSERT INTO categories(name) VALUES('Carros');
 
 CREATE TABLE "files" (
   "id" SERIAL PRIMARY KEY,
@@ -57,6 +57,7 @@ RETURNS TRIGGER AS $$
 BEGIN
   NEW.updated_at = NOW();
   RETURN NEW;
+END
  $$ LANGUAGE plpgsql;
 
 -- auto_updated_at products
@@ -83,3 +84,9 @@ WITH (OIDS=FALSE);
 ALTER TABLE "session" ADD CONSTRAINT "session_pkey" PRIMARY KEY ("sid") NOT DEFERRABLE INITIALLY IMMEDIATE;
 
 CREATE INDEX "IDX_session_expire" ON "session" ("expire");
+
+
+---token password recovery
+
+ALTER TABLE "users"ADD COLUMN reset_token text;
+ALTER TABLE "users"ADD COLUMN reset_token_expires text;
