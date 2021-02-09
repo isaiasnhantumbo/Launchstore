@@ -5,15 +5,15 @@ const Mask = {
     }, 1);
   },
   formatMZN(value) {
-    value = value.replace(/\D/g, "");
+    value = value.replace(/\D/g, '');
 
-    return new Intl.NumberFormat("pt-MZ", {
-      style: "currency",
-      currency: "MZN",
+    return new Intl.NumberFormat('pt-MZ', {
+      style: 'currency',
+      currency: 'MZN',
     }).format(value / 100);
   },
   cpfCnpj(value) {
-    value = value.replace(/\D/g, "");
+    value = value.replace(/\D/g, '');
 
     if (value.length > 14) {
       value = value.slice(0, -1);
@@ -24,43 +24,43 @@ const Mask = {
       // 11222333000111
 
       // 11.222333000111
-      value = value.replace(/(\d{2})(\d)/, "$1.$2");
+      value = value.replace(/(\d{2})(\d)/, '$1.$2');
 
       // 11.222.333000111
-      value = value.replace(/(\d{3})(\d)/, "$1.$2");
+      value = value.replace(/(\d{3})(\d)/, '$1.$2');
 
       // 11.222.333/000111
-      value = value.replace(/(\d{3})(\d)/, "$1/$2");
+      value = value.replace(/(\d{3})(\d)/, '$1/$2');
 
       // 11.222.333/0001-11
-      value = value.replace(/(\d{4})(\d)/, "$1-$2");
+      value = value.replace(/(\d{4})(\d)/, '$1-$2');
     } else {
       // cpf 111.222.33-11
-      value = value.replace(/(\d{3})(\d)/, "$1.$2");
+      value = value.replace(/(\d{3})(\d)/, '$1.$2');
 
-      value = value.replace(/(\d{3})(\d)/, "$1.$2");
+      value = value.replace(/(\d{3})(\d)/, '$1.$2');
 
-      value = value.replace(/(\d{3})(\d)/, "$1-$2");
+      value = value.replace(/(\d{3})(\d)/, '$1-$2');
     }
     return value;
   },
   cep(value) {
-    value = value.replace(/\D/g, "");
+    value = value.replace(/\D/g, '');
 
     if (value.length > 8) {
       value = value.slice(0, -1);
     }
 
-    value = value.replace(/(\d{5})(\d)/, "$1-$2");
+    value = value.replace(/(\d{5})(\d)/, '$1-$2');
 
     return value;
   },
 };
 
 const PhotosUpload = {
-  preview: document.querySelector("#photos-preview"),
+  preview: document.querySelector('#photos-preview'),
   uploadLimit: 6,
-  input: "",
+  input: '',
   files: [],
   handleFileInput(event) {
     const { files: fileList } = event.target;
@@ -99,13 +99,13 @@ const PhotosUpload = {
 
     const photosDiv = [];
     preview.childNodes.forEach((item) => {
-      if (item.classList && item.classList.value == "photo")
+      if (item.classList && item.classList.value == 'photo')
         photosDiv.push(item);
     });
 
     const totalPhotos = fileList.length + photosDiv.length;
     if (totalPhotos > uploadLimit) {
-      alert("Voce atingiu o limite máximo de fotos");
+      alert('Voce atingiu o limite máximo de fotos');
       event.preventDefault();
       return true;
     }
@@ -114,15 +114,15 @@ const PhotosUpload = {
   },
   getAllFiles() {
     const dataTransfer =
-      new ClipboardEvent("").clipboardData || new DataTransfer();
+      new ClipboardEvent('').clipboardData || new DataTransfer();
 
     PhotosUpload.files.forEach((file) => dataTransfer.items.add(file));
 
     return dataTransfer.file;
   },
   getContainer(image) {
-    const div = document.createElement("div");
-    div.classList.add("photo");
+    const div = document.createElement('div');
+    div.classList.add('photo');
 
     div.onclick = PhotosUpload.removePhoto;
 
@@ -132,9 +132,9 @@ const PhotosUpload = {
     return div;
   },
   getRemoveButton() {
-    const button = document.createElement("i");
-    button.classList.add("material-icons");
-    button.innerHTML = "close";
+    const button = document.createElement('i');
+    button.classList.add('material-icons');
+    button.innerHTML = 'close';
     return button;
   },
   removePhoto(event) {
@@ -163,15 +163,15 @@ const PhotosUpload = {
 };
 
 const ImageGallery = {
-  highlight: document.querySelector(".gallery .highlight > img"),
-  previews: document.querySelectorAll(".gallery-preview img"),
+  highlight: document.querySelector('.gallery .highlight > img'),
+  previews: document.querySelectorAll('.gallery-preview img'),
   setImage(e) {
     const { target } = e;
 
     ImageGallery.previews.forEach((preview) =>
-      preview.classList.remove("active")
+      preview.classList.remove('active')
     );
-    target.classList.add("active");
+    target.classList.add('active');
 
     ImageGallery.highlight.src = target.src;
     Lightbox.image.src = target.src;
@@ -179,9 +179,9 @@ const ImageGallery = {
 };
 
 const Lightbox = {
-  target: document.querySelector(".lightbox-target"),
-  image: document.querySelector(".lightbox-target img"),
-  closeButton: document.querySelector(".lightbox-target a.lightbox-close"),
+  target: document.querySelector('.lightbox-target'),
+  image: document.querySelector('.lightbox-target img'),
+  closeButton: document.querySelector('.lightbox-target a.lightbox-close'),
 
   open() {
     Lightbox.target.style.opacity = 1;
@@ -191,9 +191,9 @@ const Lightbox = {
   },
   close() {
     Lightbox.target.style.opacity = 0;
-    Lightbox.target.style.top = "-100%";
-    Lightbox.target.style.bottom = "initial";
-    Lightbox.closeButton.style.top = "-80";
+    Lightbox.target.style.top = '-100%';
+    Lightbox.target.style.bottom = 'initial';
+    Lightbox.closeButton.style.top = '-80';
   },
 };
 
@@ -207,14 +207,14 @@ const Validate = {
     if (results.error) Validate.displayError(input, results.error);
   },
   displayError(input, error) {
-    const div = document.createElement("div");
-    div.classList.add("error");
+    const div = document.createElement('div');
+    div.classList.add('error');
     div.innerHTML = error;
     input.parentNode.appendChild(div);
     input.focus();
   },
   clearErrors(input) {
-    const errorDiv = input.parentNode.querySelector(".error");
+    const errorDiv = input.parentNode.querySelector('.error');
     if (errorDiv) errorDiv.remove();
   },
   isEmail(value) {
@@ -222,7 +222,7 @@ const Validate = {
 
     const mailFormat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+/;
 
-    if (!value.match(mailFormat)) error = "Email invalido";
+    if (!value.match(mailFormat)) error = 'Email invalido';
     return {
       error,
       value,
@@ -231,30 +231,46 @@ const Validate = {
   isCpfCnpj(value) {
     let error = null;
 
-    const cleanValues = value.replace(/\D/g, "");
+    const cleanValues = value.replace(/\D/g, '');
 
     if (cleanValues.length > 11 && cleanValues.length !== 14) {
-      error = "CNPJ incorreto";
+      error = 'CNPJ incorreto';
     } else if (cleanValues.length < 12 && cleanValues.length !== 11)
-      error = "CPF incorreto";
+      error = 'CPF incorreto';
 
     return {
       error,
       value,
     };
   },
-  isCep(value){
+  isCep(value) {
     let error = null;
 
-    const cleanValues = value.replace(/\D/g, "");
-    if (cleanValues.length !== 8 ) {
-      error = "CEP incorreto";
-    } 
+    const cleanValues = value.replace(/\D/g, '');
+    if (cleanValues.length !== 8) {
+      error = 'CEP incorreto';
+    }
 
     return {
       error,
       value,
     };
+  },
+  allFields(event) {
+    const items = document.querySelectorAll(
+      '.item input, .item select, .item textarea'
+    );
 
-  }
+    for (item of items) {
+      if (item.value == '') {
+        const message = document.createElement('div');
+        message.classList.add('messages');
+        message.classList.add('error');
+        message.style.position = 'fixed';
+        message.innerHTML = 'Todos os campos são obrigatórios.';
+        document.querySelector('body').append(message);
+        event.preventDefault();
+      }
+    }
+  },
 };
