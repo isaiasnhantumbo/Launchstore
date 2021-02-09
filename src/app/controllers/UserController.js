@@ -1,4 +1,9 @@
+const { hash } = require('bcryptjs');
+const { unlinkSync } = require('fs');
+
 const User = require('../models/User');
+const Product = require('../models/Product');
+
 const { formatCep, formatCpfCnpj } = require('../../lib/utils');
 
 module.exports = {
@@ -6,17 +11,38 @@ module.exports = {
     return res.render('user/register');
   },
   async show(req, res) {
-    const { user } = req;
+    try {
+      const { user } = req;
 
-    user.cpf_cnpj = formatCpfCnpj(user.cpf_cnpj);
-    user.cep = formatCep(user.cep);
-    return res.render('user/index', { user });
+      user.cpf_cnpj = formatCpfCnpj(user.cpf_cnpj);
+      user.cep = formatCep(user.cep);
+      return res.render('user/index', { user });
+    } catch (error) {
+      console.error(error);
+    }
   },
   async post(req, res) {
-    const userId = await User.create(req.body);
-    req.session.userId = userId;
+    try {
+      let { name, email, password, cpf_cnpj, cep, address } = req.body;
 
-    return res.redirect('/users');
+      password = await hash(password, 8);
+      cpf_cnpj = cpf_cnpj.replace(/\D/g, '');
+      cep = cep.replace(/\D/g, '');
+
+      const userId = await User.create({
+        name,
+        email,
+        password,
+        cpf_cnpj,
+        cep,
+        address,
+      });
+      req.session.userId = userId;
+
+      return res.redirect('/users');
+    } catch (error) {
+      console.error(error);
+    }
   },
   async update(req, res) {
     try {
@@ -47,8 +73,32 @@ module.exports = {
   },
   async delete(req, res) {
     try {
+      // Get all products
+      const products = await Product.findAll({
+        where: { user_id: req.body.id },
+      });
+
+      //On products, get all images
+      const allFilesPromise = products.map((product) =>
+        Product.files(product.id)
+      );
+
+      let promiseResults = await Promise.all(allFilesPromise);
+
+      // delete user from database
       await User.delete(req.body.id);
       req.session.destroy();
+
+      // delete images from public folder
+      promiseResults.map(files => {
+        files.map((file) => {
+          try {
+            unlinkSync(file.path);
+          } catch (err) {
+            console.error(err);
+          }
+        });
+      });
 
       return res.render('session/login', {
         success: 'Conta apagada com sucesso',
