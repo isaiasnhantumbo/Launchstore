@@ -10,9 +10,9 @@
         <div class="product">
             <div class="image" style="background-image: url({{product.img if product.img else 'https://via.placeholder.com/700?text=PRODUTOSEMNOME'}})">
         </div>
-            <p>{{product.price}}</p>
-           {% if product.oldPrice != product.price %}
-            <div class="old-price">{{product.oldPrice}}</div>
+            <p>{{product.formattedPrice}}</p>
+           {% if product.formattedOldPrice != product.formattedPrice %}
+            <div class="old-price">{{product.formattedOldPrice}}</div>
            {% endif %}
             <h4>{{product.name}}</h4>
 
