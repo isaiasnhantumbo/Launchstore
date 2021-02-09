@@ -3,9 +3,9 @@ const User = require('../models/User');
 
 const mailer = require('../../lib/mailer');
 
-const email = (seller, product, buyer) => {
-  `   <h2>Olá ${seller.name}</h2>
-    <p>Você tem um novo pedido de compra do seu product</p>
+const email = (seller, product, buyer) => `
+    <h2>Olá ${seller.name}</h2>
+    <p>Você tem um novo pedido de compra do seu produto</p>
     <p>Produto: ${product.name}</p>
     <p>Preço: ${product.formattedPrice}</p>
     <p><br/><br/></p>
@@ -17,8 +17,7 @@ const email = (seller, product, buyer) => {
     <p><br/><br/></p>
     <p><strong>Entre em contacto com o comprador para finalizar a venda!</strong></p>
     <p><br/><br/></p>
-    <p>Atenciosamente, Equipe Launchstore</p>`;
-};
+    <p>Atenciosamente, Equipe Launchstore</p>`
 
 module.exports = {
   async post(req, res) {
