@@ -1,3 +1,6 @@
+DROP SCHEMA public CASCADE;
+CREATE SCHEMA public;
+
 DROP DATABASE IF EXISTS launchstoredb;
 CREATE DATABASE launchstoredb
 
@@ -102,7 +105,7 @@ ON DELETE CASCADE;
 
 ALTER TABLE "files"
 DROP CONSTRAINT files_product_id_fkey,
-ADD CONSTRAINT files_product_id_fkey,
+ADD CONSTRAINT files_product_id_fkey
 FOREIGN KEY ("product_id")
-REFERENCES "product" ("id")
+REFERENCES "products" ("id")
 ON DELETE CASCADE;
