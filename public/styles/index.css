@@ -127,24 +127,25 @@ header div.container a {
 
 /* PRIMARY MENU */
 
-nav.primary ul {
+nav.primary > ul {
   display: flex;
   justify-content: space-between;
 }
 
-nav.primary ul li a {
+nav.primary > ul > li > a {
   display: flex;
   align-items: center;
 
   color: white;
+  height: 48px;
 
   transition: 200ms;
 }
 
-nav.primary ul li a:hover {
+nav.primary > ul > li > a:hover {
   color: var(--primary-color);
 }
-nav.primary ul li a li {
+nav.primary > ul > li > a > li {
   margin-right: 8px;
 }
 
@@ -323,27 +324,24 @@ form .item #photos-preview img {
   opacity: 1;
 }
 
-
-
 /* SHOP */
 
-.shop h2{
+.shop h2 {
   margin: 48px 0;
-
 }
 
-.shop .items{
+.shop .items {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
 
   grid-gap: 32px;
 }
 
-.shop .product{
+.shop .product {
   display: grid;
 }
 
-.shop .product .image{
+.shop .product .image {
   padding-top: 56.25%;
 
   background-size: cover;
@@ -351,19 +349,19 @@ form .item #photos-preview img {
   background-repeat: no-repeat;
 }
 
-.shop .items h4{
+.shop .items h4 {
   margin: 8px 0;
   font-weight: 300;
   color: #999;
 }
-.shop .items p{
+.shop .items p {
   color: #101010;
   font-weight: 300;
   font-size: 24px;
   margin-top: 8px;
 }
 
-.shop .product .old-price{
+.shop .product .old-price {
   padding: 0;
   margin: 4px 0;
 
@@ -372,63 +370,59 @@ form .item #photos-preview img {
 
   text-decoration: line-through;
 }
- 
+
 /* SEARCH PAGE */
-.search-product{
+.search-product {
   display: grid;
   grid-template-columns: 200px 1fr;
 
   margin-top: 48px;
 }
 
-.search-product .header{
+.search-product .header {
   margin-bottom: 48px;
 
   font-size: 14px;
   color: #333;
 }
 
-.search-product .header h2{
+.search-product .header h2 {
   font-size: 26px;
   text-transform: uppercase;
-  
+
   margin-bottom: 8px;
 }
-.search-product nav h4{
+.search-product nav h4 {
   margin-bottom: 16px;
-  
+
   color: #333;
   font-size: 14px;
   text-transform: uppercase;
 }
 
-.search-product nav ul li{
+.search-product nav ul li {
   margin: 4px 0;
 }
 
-.search-product nav ul li a{
+.search-product nav ul li a {
   color: #777;
 }
 
-
-.search-product nav ul li a:hover{
+.search-product nav ul li a:hover {
   color: black;
   font-weight: bold;
 }
 
-
-
 .form input[name="password"],
 .form input[name="passwordRepeat"],
 .form input[name="cpf_cnpj"],
-.form input[name="cep"]{
+.form input[name="cep"] {
   max-width: 60%;
 }
 /* Valudate erros */
-.input .error{
+.input .error {
   background-color: #e74c3c;
   padding: 4px;
   border-radius: 4px;
   color: white;
-
 }
