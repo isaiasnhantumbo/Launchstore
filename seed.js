@@ -3,7 +3,7 @@ const { hash } = require('bcryptjs');
 
 const User = require('./src/app/models/User');
 const Product = require('./src/app/models/Product');
-const File = require('./src/app/models/Files');
+const File = require('./src/app/models/File');
 
 let totalProducts = 10;
 let totalUsers = 3;
@@ -14,7 +14,7 @@ async function createUsers() {
 
   const password = await hash('1111', 8);
 
-  while (users.length < 3) {
+  while (users.length < 6) {
     users.push({
       name: faker.name.firstName(),
       email: faker.internet.email(),
@@ -64,8 +64,8 @@ async function createProducts() {
 }
 
 async function init(){
-  // await createUsers()
-  await createProducts()
+  await createUsers()
+  // await createProducts()
 }
 
 init();
