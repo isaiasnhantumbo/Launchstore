@@ -24,7 +24,7 @@ const Base = {
   },
   async find(id) {
     const results = await find({ where: { id } }, this.table);
-    return results.rows[0]
+    return results.rows[0];
   },
   async findOne(filters) {
     const results = await find(filters, this.table);
@@ -33,6 +33,10 @@ const Base = {
   async findAll(filters) {
     const results = await find(filters, this.table);
     return results.rows;
+  },
+  async findOneWithDeleted(filters) {
+    const results = await find(filters, `${this.table}_with_deleted`);
+    return results.rows[0];
   },
   async create(fields) {
     try {
@@ -60,7 +64,7 @@ const Base = {
       Object.keys(fields).map((key, index, array) => {
         // category_id=($1),
         const line = `${key} = '${fields[key]}'`;
-        update.push(line)
+        update.push(line);
       });
       let query = `UPDATE ${this.table} SET
       ${update.join(',')} WHERE id = ${id}

@@ -6,7 +6,7 @@ const { formatPrice, date } = require('../../lib/utils');
 
 async function format(order) {
   // product details
-  order.product = await LoadProductService.load('products', {
+  order.product = await LoadProductService.load('productWithDeleted', {
     where: { id: order.product_id },
   });
   // buyer details
@@ -33,7 +33,7 @@ async function format(order) {
 
   // format updated at
   const updatedAt = date(order.updated_at);
-  order.formattedUpdatedAt = `${order.formattedStatus} em ${updatedAt.day}/${updatedAt.month}/${updatedAt.year} às ${updatedAt.hour}/${updatedAt.minutes}`;
+  order.formattedUpdatedAt = `${order.formattedStatus} em ${updatedAt.day}/${updatedAt.month}/${updatedAt.year} às ${updatedAt.hour}h${updatedAt.minutes}`;
 
   return order;
 }
